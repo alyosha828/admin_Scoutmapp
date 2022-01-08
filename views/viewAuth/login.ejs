@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../layoutHead %>
+
+<body class="bg">
+    <% include ../partial/topHeader %>
+    <div>
+        <div class="space-30"> </div>
+        <div class="centerImage">
+            <img src="/assets/images/bg_logo.png" width="520" height="127" alt="">
+        </div>
+        <div class="space-10"> </div>
+        <div>
+            <div>
+                <form id="login" class="sign-box" method="post" action="/login">
+                    <header class="sign-title">LOG IN</header>
+                    <hr>
+                    <div class="form-group">
+                        <p> Email </p>
+                        <input type="email" name="email" class="form-control" placeholder="Enter email"
+                            data-validetta="required,email">
+                    </div>
+                    <div class="form-group">
+                        <p> Password </p>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password"
+                            data-validetta="required,minLength[8]">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">LOG IN</button>
+                    <div class="space-10"></div>
+                    <button class="btn btn-warning btn-lg btn-block" onclick="location.href='/signup'" type="button">SIGN UP</button>
+                    <hr>
+                    <p align="center"><a href="/forgot">Forgot your password?</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/plugins/iCheck/icheck.min.js"></script>
+    <!-- Validate JS -->
+    <script src="/assets/js/validetta.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'icheckbox_flat-blue'
+            });
+            $('#login').validetta({
+                showErrorMessages: true,
+                bubblePosition: 'bottom', // Bubble position // right / bottom
+                bubbleGapLeft: 1, // Right gap of bubble (px unit)
+                bubbleGapTop: 1, // Top gap of bubble (px unit)
+                realTime: true,
+                onValid: function (event) { },
+                onError: function (event) { }
+            });
+        });
+    </script>
+</body>
+
+</html>

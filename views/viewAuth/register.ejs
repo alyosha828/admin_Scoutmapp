@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../layoutHead %>
+
+<body class="bg">
+    <% include ../partial/topHeader %>
+    <div>
+        <div class="space-30"> </div>
+        <div class="centerImage">
+            <img src="/assets/images/bg_logo.png" width="520" height="127" alt="">
+        </div>
+        <div class="space-10"> </div>
+        <div>
+            <div>
+                <form class="signup-box" id="signup" method="post" enctype="multipart/form-data" action="/signup">
+                    <header class="sign-title">SIGN UP</header>
+                    <hr>
+                    <div class="row row-zero">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">First Name</label>
+                            <div>
+                                <input type="text" class="form-control input-lg" name="first_name"
+                                    data-validetta="required">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Last Name</label>
+                            <div>
+                                <input type="text" name="last_name" class="form-control input-lg"
+                                    data-validetta="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-zero">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">User Name</label>
+                            <div>
+                                <input type="text" class="form-control input-lg" name="user_name">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Job Title</label>
+                            <div>
+                                <input type="text" name="job_title" class="form-control margin-b-20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-zero">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Email</label>
+                            <div>
+                                <input type="email" class="form-control margin-b-20" name="email"
+                                    data-validetta="required, email">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Status</label>
+                            <div>
+                                <select class="selectpicker form-control margin-b-20" name="status"
+                                    data-validetta="required">
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-zero">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Password</label>
+                            <input type="password" name="password" class="form-control"
+                                placeholder="Enter your password" data-validetta="required,minLength[8]">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Confirm Password</label>
+                            <input type="password" name="confirm_password" class="form-control"
+                                placeholder="Enter your password again" data-validetta="required,minLength[8]">
+                        </div>
+                    </div>
+                    <div class="row row-zero">
+                        <div class="form-group col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Issued Bondadosa
+                                    Date</label>
+                                <div>
+                                    <input type="date" class="form-control margin-b-20" name="issued_date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Phone Number</label>
+                                <div>
+                                    <input type="number" class="form-control margin-b-20" name="phone_number"
+                                        data-validetta="number">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-zero">
+                        <div class="form-group col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Mobile Device
+                                    Type</label>
+                                <div>
+                                    <select class="selectpicker form-control margin-b-20" name="mobile_type">
+                                        <option value="iOS">iOS</option>
+                                        <option value="Android">Android
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Issued Bondadosa
+                                    Device</label>
+                                <div>
+                                    <select class="selectpicker form-control margin-b-20" name="issued_device">
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"></label>
+                                <input id="is_driver" type="checkbox" name="is_driver">
+                                Delivery Driver?
+                                <br>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Avatar</label>
+                            <div class="small-12 medium-2 large-2 columns">
+                                <div id="divUpload1" class="rectangle">
+                                    <img id="preview1" class="profile-pic input-img">
+                                </div>
+                                <input id="avatar-1" name="avatar-1" class="file-upload" type="file" accept="image/*" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divDriver">
+                        <div class="row row-zero">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">License First Name</label>
+                                <input type="text" name="license_first_name" class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">License Last Name</label>
+                                <input type="text" name="license_last_name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row row-zero">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Drivers License ID</label>
+                                <div>
+                                    <input type="text" class="form-control input-lg" name="drivers_license_id">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">License Experation
+                                    Date</label>
+                                <div>
+                                    <input type="date" class="form-control input-lg" name="license_experation_date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-zero">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Driver Status</label>
+                                <select class="selectpicker form-control margin-b-20" name="driver_status">
+                                    <option value="working">Working</option>
+                                    <option value="On-Call">On-Call</option>
+                                    <option value="PTO">PTO</option>
+                                    <option value="sick">Sick Leave</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Driver Rating</label>
+                                <select class="selectpicker form-control margin-b-20" name="driver_rating">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row row-zero">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Spoken Languages</label>
+                                <select class="selectpicker form-control margin-b-20" name="spoken_languages"
+                                    multiple="true">
+                                    <option value="English">English</option>
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="French">French</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="Russian">Russian</option>
+                                    <option value="Russian">Korean</option>
+                                    <option value="Russian">German</option>
+                                    <option value="Russian">Japanese</option>
+                                    <option value="Russian">Portugese</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row row-zero">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">License Address</label>
+                                <div>
+                                    <input type="text" class="form-control input-lg" name="license_address">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label class="control-label">License City</label>
+                                <div>
+                                    <input type="text" name="license_city" class="form-control input-lg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-zero">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">License State</label>
+                                <div>
+                                    <input type="text" class="form-control input-lg" name="license_state">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">License Zip Code</label>
+                                <div>
+                                    <input type="text" name="license_zip_code" class="form-control input-lg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-zero">
+                        <div class="col-md-4 col-md-offset-2">
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Sign Up</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="cancel" class="btn btn-cancel btn-lg btn-block">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Validate JS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="/assets/js/validetta.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#signup').validetta({
+                showErrorMessages: true,
+                bubblePosition: 'bottom', // Bubble position // right / bottom
+                bubbleGapLeft: 1, // Right gap of bubble (px unit)
+                bubbleGapTop: 1, // Top gap of bubble (px unit)
+                realTime: true,
+                onValid: function (event) { },
+                onError: function (event) { }
+            });
+
+            if ($("#is_driver").checked) {
+                $("#divDriver").show();
+            } else {
+                $("#divDriver").hide();
+            }
+            $("#is_driver").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#divDriver").show();
+                } else {
+                    $("#divDriver").hide();
+                }
+            });
+
+            // Photo Select
+            var readURL = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("#preview1").attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#avatar-1").on('change', function () {
+                readURL(this);
+            });
+
+            $("#divUpload1").on('click', function () {
+                $("#avatar-1").click();
+            });
+
+            $("#cancel").click(function () {
+                window.history.back();
+            });
+
+
+        });
+    </script>
+</body>
+
+</html>

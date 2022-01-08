@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../layoutHead %>
+    <body>
+        <div class="space-60"></div>
+        <div class="page-center">
+            <div class="page-center-in">
+                <form class="sign-box" id="reset" method="post" action="/resetpass">
+                    <header class="sign-title">Reset Password</header>
+                    <div class="space-20"></div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" placeholder="Password" data-validetta="required,minLength[8]">
+                    </div>
+                    <div class="space-5"></div>
+                    <div class="form-group">
+                        <input type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password" data-validetta="required,minLength[8]">
+                    </div>
+                    <input id="token" type="hidden" name="token">
+                    <div class="space-20"></div>
+                    <button type="submit" class="btn btn-success rounded btn-lg">Reset</button>
+                </form>
+            </div>
+            <!--page center in-->
+        </div>
+        <!--page center-->
+
+        <!-- Validate JS -->
+        <script src="/assets/js/validetta.min.js"></script>
+        <script>
+            var token = "<%= token %>";
+            console.log(token)
+            $('#token').val(token)    
+            $(document).ready(function () {
+                $('#reset').validetta({
+                    showErrorMessages: true,
+                    bubblePosition: 'bottom', // Bubble position // right / bottom
+                    bubbleGapLeft: 1, // Right gap of bubble (px unit)
+                    bubbleGapTop: 1, // Top gap of bubble (px unit)
+                    realTime: true,
+                    onValid: function (event) { },
+                    onError: function (event) { }
+                });
+            });
+        </script>
+    </body>
+
+</html>

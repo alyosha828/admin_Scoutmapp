@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ./layoutHead %>
+
+<body>
+    <div class="page-center">
+        <div class="page-center-in">
+            <div class="page-error-box">
+                <h1>404</h1>
+                <h4>Page Not found</h4>
+                <p>
+                    Sorry, but the page you are looking for has note been found.
+                </p>
+                <div class="space-20"></div>
+                <button class="btn btn-lg btn-default rounded" onclick="goBack()">Go Back</button>
+                <!-- <a href='#' class="btn btn-lg btn-default rounded">back to home</a> -->
+            </div>
+        </div>
+        <!--page center in-->
+    </div>
+    <!--page center-->
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+
+</html>

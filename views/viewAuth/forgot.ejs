@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../layoutHead %>
+    <body>
+        <div class="page-center">
+            <div class="page-center-in">
+                <form class="sign-box" id="forgot" method="post" action="/forgotpass">
+                    <header class="sign-title">Forgot Password</header>
+                    <hr>
+                    <p> 1. Insert your email address below and click the submit button.</p>
+                    <p> 2. Check your email for the reset password email. Be sure to also check your spam folder.</p>
+                    <p> 3. Click the link in the email and follow prompts to reset password"</p>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" placeholder="Email address" data-validetta="required,email">
+                    </div>
+                    <div class="space-20"></div>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
+                </form>
+            </div>
+            <!--page center in-->
+        </div>
+        <!--page center-->
+
+        <!-- Validate js -->
+        <script src="/assets/js/validetta.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#forgot').validetta({
+                    showErrorMessages: true,
+                    bubblePosition: 'bottom', // Bubble position // right / bottom
+                    bubbleGapLeft: 1, // Right gap of bubble (px unit)
+                    bubbleGapTop: 1, // Top gap of bubble (px unit)
+                    realTime: true,
+                    onValid: function (event) { },
+                    onError: function (event) { }
+                });
+            });
+            $("#forgot").submit(function (event) {
+                alert("Please check your email address to reset your password and then login again.");
+            });
+        </script>
+    </body>
+
+</html>

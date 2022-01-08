@@ -1,0 +1,215 @@
+<% layout('../layout') -%>
+
+<body hoe-navigation-type="vertical" hoe-nav-placement="left" theme-layout="wide-layout">
+    <div id="hoeapp-wrapper" class="hoe-hide-lpanel" hoe-device-type="desktop">
+        <% include ../partial/navHeader %>
+        <div id="hoeapp-container" hoe-color-type="lpanel-bg5" hoe-lpanel-effect="shrink">
+            <% include ../partial/leftDrawer %>
+            <!--start main content-->
+            <section id="main-content">
+                <div class="container">
+                    <div class="main-title">
+                        <h1> List of Players </h1>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <table id="datatable" class="table table-striped  nowrap" style="width:100%">
+                                    </table>
+                                </div>
+                                <!--panel body end-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end panel-->
+                </div>
+                <!--col end-->
+            </section>
+        </div>
+        <!--row end-->
+    </div>
+
+    <!--end main content-->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.9/css/bootstrap-select.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.9/js/bootstrap-select.min.js"></script>
+    <!-- Validate JS -->
+    <!-- <script src="/assets/js/stats.js"></script> -->
+    <!-- Validate JS -->
+    <script src="/assets/js/validetta.min.js"></script>
+
+    <script>
+        $('#idPlayerManagement').addClass('opened');
+        $('#idPlayerDatabase').addClass('active');
+        $(document).ready(function () {
+            $('#editForm').validetta({
+                showErrorMessages: true,
+                bubblePosition: 'bottom', // Bubble position // right / bottom
+                bubbleGapLeft: 1, // Right gap of bubble (px unit)
+                bubbleGapTop: 1, // Top gap of bubble (px unit)
+                realTime: true,
+                onValid: function (event) { },
+                onError: function (event) { }
+            });
+        });
+        getData();
+        function getData() {
+            $.get(`/api/player/database`, function (response) {
+                console.log(response)
+                if (response.data && response.data.length > 0) {
+                    loadData(response.data)
+                }
+            });
+        }
+
+        var fieldNames = [
+            "No",
+            "User ID",
+            "Photo",
+            "First Name",
+            "Last Name",
+            "Gender",
+            "Email",
+            "City",
+            "State",
+            "Resume",
+            "Height",
+            "Weight",
+            "Age",
+            "DOB",
+            "Club Name",
+            "School Name",
+            "Zip Code",
+            "GPA",
+            "Act Score",
+            "Sat Score",
+            "AP Credits",
+            "Primary Position",
+            "Secondary Position",
+            "Dominant Foot",
+            "Strength",
+            "Action"
+        ];
+        var fields = [
+            "No",
+            "userId",
+            "imageURL",
+            "firstName",
+            "lastName",
+            "sex",
+            "email",
+            "city",
+            "province",
+            "resumeURL",
+            "height",
+            "weight",
+            "age",
+            "dob",
+            "phone",
+            "schoolName",
+            "classOf",
+            "gpa",
+            "actScore",
+            "satScore",
+            "apCredits",
+            "stat1",
+            "stat3",
+            "stat4",
+            "stat5",
+            "Action"
+        ];
+
+        function loadHeader() {
+            var innerHtml = "";
+            for (const idx in fieldNames) {
+                if (fieldNames[idx] === "Action") {
+                    innerHtml += `<th class="no-sort">${fieldNames[idx]}</th>`
+                } else {
+                    innerHtml += `<th>${fieldNames[idx]}</th>`
+                }
+            }
+            const header = `<thead><tr>${innerHtml}</tr></thead>`;
+            return header;
+        }
+
+        function loadData(data) {
+            const header = loadHeader();
+            var rowHtml = "";
+            for (var i = 0; i < data.length; i++) {
+                var innerHtml = "<tr>";
+                for (const idxIn in fields) {
+                    if (fields[idxIn] === "Action") {
+                        innerHtml += `<td><a class="userDelete" id=${data[i]['userId']} href="#"><img src="/assets/images/icon_delete.png"></a> </td>`;
+                    } else if (fields[idxIn] === "imageURL") {
+                        if (data[i][fields[idxIn]] === "unknown" || data[i][fields[idxIn]] === null) {
+                            innerHtml += `<td> </td>`;
+                        } else {
+                            innerHtml += `<td><img src=${data[i][fields[idxIn]]} class ="img-circle center"  border-radius="50%";  border='3' height='60' width='60'/></td>`;
+                        }
+
+                    } else if (fields[idxIn] === "No") {
+                        innerHtml += `<td>${i + 1}</td>`;
+                    } else if (fields[idxIn] === "resumeURL") {
+                        if (data[i][fields[idxIn]] === null || data[i][fields[idxIn]] === "") {
+                            innerHtml += `<td> no resume </td>`;
+                        } else {
+                            innerHtml += `<td><a id ="noAction" target="_blank" href="${data[i][fields[idxIn]]}">${data[i][fields[idxIn]]}</a></td>`;
+                        }
+
+                    } else {
+                        if (idxIn > 9) {
+                            innerHtml += `<td>${data[i]["athleteProfile"][fields[idxIn]]}</td>`;
+                        } else {
+                            innerHtml += `<td>${data[i][fields[idxIn]]}</td>`;
+                        }
+                    }
+                }
+                innerHtml += "</tr>";
+                rowHtml += innerHtml;
+            }
+            var tbodyHtml = `${header}<tbody>${rowHtml}</tbody>`;
+            $('#datatable').html(tbodyHtml);
+            $('#datatable').dataTable(
+                {
+                    "scrollY": 350,
+                    "scrollX": true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }]
+                }
+            );
+        }
+        $('#datatable').on('click', 'tbody tr td a', function () {
+            console.log($(this))
+            var selId = $(this).attr('id')
+            if (selId === "noAction") {
+
+            } else {
+                var answer = window.confirm("Do you want to delete this selected player?");
+                console.log($(this).attr('id'))
+                if (answer) {
+                    var table = $('#datatable').DataTable();
+                    table
+                        .row($(this).parents('tr'))
+                        .remove()
+                        .draw();
+                    $.post(`/api/player/delete`, {
+                        userId: selId
+                    }, function (response) {
+                        console.log(response)
+                        // $('#datatable').clear()
+                        // getData();
+                    });
+                }
+                else {
+
+                }
+            }
+
+        })
+    </script>
+
+</body>

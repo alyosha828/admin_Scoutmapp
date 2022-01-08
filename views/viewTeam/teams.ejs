@@ -1,0 +1,610 @@
+<% layout('../layout') -%>
+
+<body hoe-navigation-type="vertical" hoe-nav-placement="left" theme-layout="wide-layout">
+    <div id="hoeapp-wrapper" class="hoe-hide-lpanel" hoe-device-type="desktop">
+        <% include ../partial/navHeader %>
+        <div id="hoeapp-container" hoe-color-type="lpanel-bg5" hoe-lpanel-effect="shrink">
+            <% include ../partial/leftDrawer %>
+            <!--start main content-->
+            <section id="main-content">
+                <div class="container">
+                    <div class="main-title">
+                        <h1> List of Vendors </h1>
+                    </div>
+                    <hr>
+                    <% if (user.role === "Super Admin") { %>
+                    <div style="margin-left: 20px;">
+                        <button type="button" class="btn btn-lg btn-border btn-success" data-toggle="modal"
+                            data-target="#addNewModal" onclick="initView();"><i class="fa fa fa-plus"></i> &nbsp; Add
+                            New</button>
+                    </div>
+                    <hr>
+                    <% } %>
+                    <div>
+                        <div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <table id="datatable" class="table table-striped  nowrap" style="width:100%">
+                                    </table>
+                                </div>
+                                <!--panel body end-->
+                                <!-- add new Modal view -->
+                                <div class="modal fade" id="addNewModal" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+                                                <h2 class="modal-title">Add New Vendor</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form role="form" method="POST" id="addForm" action="/api/vendor/add">
+                                                    <div class="row row-zero">
+                                                        <div class="form-group col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Name</label>
+                                                                <div>
+                                                                    <input type="text" class="form-control input-lg"
+                                                                        name="name" data-validetta="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label">Vendor Status</label>
+                                                                <select class="selectpicker form-control margin-b-20"
+                                                                    name="vendor_status">
+                                                                    <option value="Active">Active</option>
+                                                                    <option value="Inactive">Inactive</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Description</label>
+                                                                <div>
+                                                                    <textarea name="description" class="form-control"
+                                                                        style="height: 100px;"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row row-zero">
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Address</label>
+                                                            <div>
+                                                                <input type="text" class="form-control input-lg"
+                                                                    name="address" >
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">City</label>
+                                                            <div>
+                                                                <input type="text" name="city"
+                                                                    class="form-control input-lg"
+                                                                    >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row row-zero">
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">State</label>
+                                                            <div>
+                                                                <input type="text" class="form-control input-lg"
+                                                                    name="state" >
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Zip Code</label>
+                                                            <div>
+                                                                <input type="text" name="zip_code"
+                                                                    class="form-control input-lg">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row row-zero">
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Vendor Type</label>
+                                                            <select class="selectpicker form-control margin-b-20"
+                                                                name="vendor_type" data-validetta="required">
+                                                                <option value="Grocery">Grocery</option>
+                                                                <option value="Grocery">CSA</option>
+                                                                <option value="BSB">BSB</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Tags</label>
+                                                            <select id="add_tags"
+                                                                class="selectpicker form-control margin-b-20"
+                                                                multiple="true" name="tags">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row row-zero">
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Bonda Lead</label>
+                                                            <select id="add_bonda_lead"
+                                                                class="selectpicker form-control margin-b-20"
+                                                                name="bonda_lead">
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Vendor Since</label>
+                                                            <input type="date" class="form-control input-lg"
+                                                                name="vendor_since">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row row-zero">
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Point of Contact</label>
+                                                            <select id="add_point_of_contact"
+                                                                class="selectpicker form-control margin-b-20"
+                                                                name="point_of_contact">
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label class="control-label">Vendor Rating</label>
+                                                            <select class="selectpicker form-control margin-b-20"
+                                                                name="vendor_rating">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="modal-footer text-center">
+                                                <button type="submit" class="btn btn-success1 btn-edit" form="addForm"
+                                                    value="Submit">Add</button>
+                                                <button type="button" class="btn btn-default btn-edit"
+                                                    data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- add  Edit Modal view -->
+                            <div class="modal fade" id="editModal" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h2 class="modal-title">Edit Vendor</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form role="form" method="POST" id="editForm" action="/api/vendor/edit">
+                                                <input id="vendor_id" type="hidden" name="vendor_id">
+                                                <div class="row row-zero">
+                                                    <div class="form-group col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Name</label>
+                                                            <div>
+                                                                <input id="name" type="text"
+                                                                    class="form-control input-lg" name="name"
+                                                                    data-validetta="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vendor Status</label>
+                                                            <select id="vendor_status"
+                                                                class="selectpicker form-control margin-b-20"
+                                                                name="vendor_status">
+                                                                <option value="Active">Active</option>
+                                                                <option value="Inactive">Inactive</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Description</label>
+                                                            <div>
+                                                                <textarea id="description" name="description"
+                                                                    class="form-control"
+                                                                    style="height: 100px;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row row-zero">
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Address</label>
+                                                        <div>
+                                                            <input id="address" type="text"
+                                                                class="form-control input-lg" name="address"
+                                                                >
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">City</label>
+                                                        <div>
+                                                            <input id="city" type="text" name="city"
+                                                                class="form-control input-lg" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row row-zero">
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">State</label>
+                                                        <div>
+                                                            <input id="state" type="text" class="form-control input-lg"
+                                                                name="state" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Zip Code</label>
+                                                        <div>
+                                                            <input id="zip_code" type="text" name="zip_code"
+                                                                class="form-control input-lg">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row row-zero">
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Vendor Type</label>
+                                                        <select id="vendor_type"
+                                                            class="selectpicker form-control margin-b-20"
+                                                            name="vendor_type" data-validetta="required">
+                                                            <option value="Grocery">Grocery</option>
+                                                            <option value="Grocery">CSA</option>
+                                                            <option value="BSB">BSB</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Tags</label>
+                                                        <select id="tags" class="selectpicker form-control margin-b-20"
+                                                            multiple="true" name="tags">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row row-zero">
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Bonda Lead</label>
+                                                        <select id="bonda_lead"
+                                                            class="selectpicker form-control margin-b-20"
+                                                            name="bonda_lead">
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Vendor Since</label>
+                                                        <input id="vendor_since" type="date"
+                                                            class="form-control input-lg" name="vendor_since">
+                                                    </div>
+                                                </div>
+                                                <div class="row row-zero">
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Point of Contact</label>
+                                                        <select id="point_of_contact"
+                                                            class="selectpicker form-control margin-b-20"
+                                                            name="point_of_contact">
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="control-label">Vendor Rating</label>
+                                                        <select id="vendor_rating"
+                                                            class="selectpicker form-control margin-b-20"
+                                                            name="vendor_rating">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer text-center">
+                                            <button type="submit" class="btn btn-success1 btn-edit" form="editForm"
+                                                value="Submit">Save</button>
+                                            <button type="button" class="btn btn-default btn-edit"
+                                                data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end panel-->
+                    </div>
+                    <!--col end-->
+                </div>
+                <!--row end-->
+        </div>
+        </section>
+        <!--end main content-->
+
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.9/css/bootstrap-select.css" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.9/js/bootstrap-select.min.js"></script>
+        <!-- Validate JS -->
+        <script src="/assets/js/validetta.min.js"></script>
+    </div>
+    </div>
+    <script>
+        $('#idVendor').addClass('active');
+        $(document).ready(function () {
+            $('#addForm').validetta({
+                showErrorMessages: true,
+                bubblePosition: 'bottom', // Bubble position // right / bottom
+                bubbleGapLeft: 1, // Right gap of bubble (px unit)
+                bubbleGapTop: 1, // Top gap of bubble (px unit)
+                realTime: true,
+                onValid: function (event) { },
+                onError: function (event) { }
+            });
+
+            $('#editForm').validetta({
+                showErrorMessages: true,
+                bubblePosition: 'bottom', // Bubble position // right / bottom
+                bubbleGapLeft: 1, // Right gap of bubble (px unit)
+                bubbleGapTop: 1, // Top gap of bubble (px unit)
+                realTime: true,
+                onValid: function (event) { },
+                onError: function (event) { }
+            });
+        });
+
+
+        var tags = [];
+        var users = [];
+
+        getData();
+        function getData() {
+            $.get(`/api/vendor/vendors`, function (response) {
+                console.log(response)
+                users = response.data.arrUser.users;
+                tags = response.data.arrTag;
+                if (response.data.data && response.data.data.length > 0) {
+                    loadData(response.data.data)
+                }
+            });
+        }
+
+        function initView() {
+            var tagsAsString = "";
+            for (var i = 0; i < tags.length; i++) {
+                tagsAsString += "<option value='" + tags[i].name + "'>" + tags[i].name + "</option>";
+            }
+            $("#add_tags")
+                .empty()
+                .append(tagsAsString);
+            $("#add_tags").selectpicker("refresh");
+
+            var optionsAsString = "";
+            for (var i = 0; i < users.length; i++) {
+                optionsAsString += "<option value='" + users[i].email + "'>" + users[i].email + "</option>";
+            }
+            $("#add_point_of_contact")
+                .empty()
+                .append(optionsAsString);
+            $("#add_point_of_contact").selectpicker("refresh");
+
+            $("#add_bonda_lead")
+                .empty()
+                .append(optionsAsString);
+            $("#add_bonda_lead").selectpicker("refresh");
+
+        };
+
+        var fieldNames = [
+            "No",
+            "Name",
+            "Vendor Type",
+            "Vendor Rating",
+            "Point of Contact",
+            "Bonda Lead",
+            "Vendor Status",
+            "Vendor Since"
+        ];
+        var fields = [
+            "No",
+            "name",
+            "vendor_type",
+            "vendor_rating",
+            "point_of_contact",
+            "bonda_lead",
+            "vendor_status",
+            "vendor_since"
+        ];
+
+        var role = "<%= user.role %>";
+        if (role === "Super Admin") {
+            fieldNames = [
+                "Action",
+                "No",
+                "Name",
+                "Vendor Type",
+                "Vendor Rating",
+                "Point of Contact",
+                "Bonda Lead",
+                "Vendor Status",
+                "Vendor Since"
+
+            ];
+            fields = [
+                "Action",
+                "No",
+                "name",
+                "vendor_type",
+                "vendor_rating",
+                "point_of_contact",
+                "bonda_lead",
+                "vendor_status",
+                "vendor_since"
+
+            ];
+        }
+
+        function loadHeader() {
+            var innerHtml = "";
+            for (const idx in fieldNames) {
+                if (fieldNames[idx] === "Action") {
+                    innerHtml += `<th class="no-sort">${fieldNames[idx]}</th>`
+                } else {
+                    innerHtml += `<th>${fieldNames[idx]}</th>`
+                }
+            }
+            const header = `<thead><tr>${innerHtml}</tr></thead>`;
+            return header;
+        }
+
+        function loadData(data) {
+            const header = loadHeader();
+            var rowHtml = "";
+            for (var i = 0; i < data.length; i++) {
+                var innerHtml = "<tr>";
+                for (const idxIn in fields) {
+                    if (fields[idxIn] === "Action") {
+                        innerHtml += `<td><a class="userEdit" id=edit_${data[i]['vendor_id']} href="#"><img src="/assets/images/icon_edit.png"></img></a>&nbsp &nbsp<a class="userDelete" id=delete_${data[i]['vendor_id']} href="#"><img src="/assets/images/icon_delete.png"></a> </td>`;
+                    } else if (fields[idxIn] === "No") {
+                        innerHtml += `<td>${i + 1}</td>`;
+                    } else {
+                        innerHtml += `<td>${data[i][fields[idxIn]]}</td>`;
+                    }
+                }
+                innerHtml += "</tr>";
+                rowHtml += innerHtml;
+            }
+            var tbodyHtml = `${header}<tbody>${rowHtml}</tbody>`;
+            $('#datatable').html(tbodyHtml);
+            $('#datatable').dataTable({
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false
+                }],
+                "scrollY": 380,
+                "scrollX": true,
+            });
+        }
+        $('#datatable').on('click', 'tbody tr td a', function () {
+            console.log($(this))
+            var strId = $(this).attr('id')
+            var clickMethod = strId.split("_")[0]
+            if (clickMethod === "edit") {
+                var selId = strId.split("_")[1]
+                getUserInfo(selId)
+            } else if (clickMethod === "delete") {
+                var selId = strId.split("_")[1]
+                var answer = window.confirm("Do you want to delete this selected vendor?");
+                console.log($(this).attr('id'))
+                if (answer) {
+                    var table = $('#datatable').DataTable();
+                    table
+                        .row($(this).parents('tr'))
+                        .remove()
+                        .draw();
+                    $.post(`/api/vendor/delete`, {
+                        vendor_id: selId
+                    }, function (response) {
+                        console.log(response)
+                        // $('#datatable').clear()
+                        // getData();
+                    });
+                }
+                else {
+                }
+            }
+            // getUserInfo(selId)
+        })
+        function getUserInfo(selId) {
+            $.get(`/api/vendor/vendor`, {
+                vendor_id: selId
+            }, function (response) {
+                console.log(response)
+                if (response.data) {
+                    displayUserInfo(response.data)
+                }
+            });
+        }
+
+        function initEditView() {
+            var tagsAsString = "";
+            for (var i = 0; i < tags.length; i++) {
+                tagsAsString += "<option value='" + tags[i].name + "'>" + tags[i].name + "</option>";
+            }
+            $("#tags")
+                .empty()
+                .append(tagsAsString);
+            $("#tags").selectpicker("refresh");
+
+            var optionsAsString = "";
+            for (var i = 0; i < users.length; i++) {
+                optionsAsString += "<option value='" + users[i].email + "'>" + users[i].email + "</option>";
+            }
+            $("#point_of_contact")
+                .empty()
+                .append(optionsAsString);
+            $("#point_of_contact").selectpicker("refresh");
+
+            $("#bonda_lead")
+                .empty()
+                .append(optionsAsString);
+            $("#bonda_lead").selectpicker("refresh");
+
+        };
+
+        function displayUserInfo(data) {
+            initEditView();
+            $('#vendor_id').val(data['vendor_id'])
+            $('#bonda_lead').val(data['bonda_lead'])
+            $('#bonda_lead').selectpicker('refresh')
+            $('#description').val(data['description'])
+            $('#name').val(data['name'])
+            $('#vendor_rating').val(data['vendor_rating'])
+            $('#vendor_rating').selectpicker('refresh')
+
+            $('#point_of_contact').val(data['point_of_contact'])
+            $('#point_of_contact').selectpicker('refresh')
+
+            $('#point_of_contact_info').val(data['point_of_contact_info'])
+            $('#tags').val(data['tags'])
+            $('#tags').selectpicker('refresh')
+            $('#vendor_since').val(data['vendor_since'])
+            $('#vendor_status').val(data['vendor_status'])
+            $('#vendor_type').val(data['vendor_type'])
+
+            var address = data['address'].split(",")
+            if (address.length == 0) {
+                $('#address').val(address)
+                $('#city').val("")
+                $('#state').val("")
+                $('#zip_code').val("")
+            } else if (address.length == 1) {
+                $('#address').val(address[0].trim())
+                $('#city').val("")
+                $('#state').val("")
+                $('#zip_code').val("")
+            } else if (address.length == 2) {
+                $('#address').val(address[0].trim())
+                $('#city').val(address[1].trim())
+                $('#state').val("")
+                $('#zip_code').val("")
+            } else if (address.length == 3) {
+                $('#address').val(address[0].trim())
+                $('#city').val(address[1].trim())
+                $('#state').val(address[2].trim())
+                $('#zip_code').val("")
+            } else if (address.length == 4) {
+                $('#address').val(address[0].trim())
+                $('#city').val(address[1].trim())
+                $('#state').val(address[2].trim())
+                $('#zip_code').val(address[3].trim())
+            }
+
+
+            $('#editModal').modal('show')
+        }
+    </script>
+
+</body>
